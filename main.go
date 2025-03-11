@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"port-service/storage"
+	"port-service/service"
 	"sync"
 	"syscall"
 )
@@ -14,5 +15,9 @@ import (
 func main() {
 	// Initialize in-memory storage
 	store := storage.NewMemoryStore()
+
+	// Create port service
+	portSvc := service.NewPortService(store)
+
 	log.Println("Service shutdown complete.")
 }
