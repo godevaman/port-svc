@@ -8,6 +8,7 @@ import (
 // Store defines the storage interface for ports.
 type Store interface {
 	Upsert(ctx context.Context, port domain.Port) error
+	Read(ctx context.Context, id string) (domain.Port, error)
 }
 
 // PortService handles port-related business logic.
@@ -26,4 +27,8 @@ func (s *PortService) Upsert(ctx context.Context, port domain.Port) error {
 		return err
 	}
 	return s.store.Upsert(ctx, port)
+}
+
+func (s *PortService) Read(ctx context.Context, id string) (domain.Port, error) {
+	return s.store.Read(ctx, id)
 }

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"errors"
 	"port-service/domain"
 	"sync"
 )
@@ -24,4 +25,16 @@ func (m *MemoryStore) Upsert(_ context.Context, port domain.Port) error {
 	defer m.mu.Unlock()
 	m.ports[port.ID] = port
 	return nil
+}
+
+func (m *MemoryStore) Read(_ context.Context, id string) (domain.Port, error) {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	port, exists := m.ports[id]
+	if !exists {
+		return domain.Port{}, errors.New("not found")
+	}
+
+	return port, nil
 }
